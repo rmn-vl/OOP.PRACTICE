@@ -1,0 +1,750 @@
+........................................студент........................
+#include <iostream>
+#include <string>
+#include <vector>
+
+class Student {
+protected:
+    std::string name;
+    int age;
+    int studentNumber;
+    std::vector<double> grades; // Вектор оценок
+
+public:
+//Конструктор: принимает имя, возраст и номер студенческого.
+    Student(std::string name, int age, int studentNumber) : name(name), age(age), studentNumber(studentNumber) {}
+//Метод: подсчет и вывод среднего балла.
+    void addGrade(double grade) {
+        grades.push_back(grade);
+    }
+
+    double calculateAverageGrade() {
+        double sum = 0;
+        for (double grade : grades) {
+            sum += grade;
+        }
+        return sum / grades.size();
+    }
+//метод вывода информации
+    void printInfo() {
+        std::cout << "Имя: " << name << ", Возраст: " << age << ", Номер студенческого билета: " << studentNumber << std::endl;
+    }
+//Деструктор: выводит сообщение о завершении обучения студента.
+    ~Student() {
+        std::cout << "Завершение обучения студента: " << name << std::endl;
+    }
+};
+//класс потомок
+class InternationalStudent : public Student {
+private:
+    std::string country;
+    std::string language;
+//конструктор должен учитывать все параметры конструктора базового класса Student, а также новые поля.
+public:
+    InternationalStudent(std::string name, int age, int studentNumber, std::string country, std::string language) :
+        Student(name, age, studentNumber), country(country), language(language) {}
+//метод выводит информацию о стране происхождения и языке общения
+    void displayInternationalStudentInfo() {
+        std::cout << "Страна происхождения: " << country << ", Язык общения: " << language << std::endl;
+    }
+//деструктор должен вывести сообщение о завершении обучения государственного студента.
+    ~InternationalStudent() {
+        std::cout << "Завершение обучения международного студента: " << name << std::endl;
+    }
+};
+
+int main() {
+    InternationalStudent student1("Роман Волощенко", 23, 11111, "Россия", "русский");
+//оценки
+    student1.addGrade(4.5);
+    student1.addGrade(4.8);
+    student1.addGrade(5.0);
+
+    double averageGrade = student1.calculateAverageGrade();
+    std::cout << "Средний балл: " << averageGrade << std::endl;
+
+    student1.printInfo();
+    student1.displayInternationalStudentInfo();
+
+    return 0;
+}
+ ......................................книга........................................
+ #include <iostream>
+#include <string>
+
+class Book {
+protected:
+    std::string title;
+    std::string author;
+    int publicationYear;
+    int numOfPages;
+
+public:
+//конструктор
+    Book(std::string title, std::string author, int publicationYear, int numOfPages) :
+        title(title), author(author), publicationYear(publicationYear), numOfPages(numOfPages) {}
+//метод вывод информации о книге.
+    void printInfo() {
+        std::cout << "Название: " << title << ", Автор: " << author << ", Год издания: "
+            << publicationYear << ", Количество страниц: " << numOfPages << std::endl;
+    }
+//деструктор выводит сообщение о том, что объект "Книга" уничтожен.
+    ~Book() {
+        std::cout << "Объект 'Книга' уничтожен." << std::endl;
+    }
+};
+//Класс Textbook наследует все защищенные и общедоступные поля и методы из Book
+class Textbook : public Book {
+private:
+    std::string subject;
+    int edition;
+
+public:
+//конструктор учитывает поля класса родителя
+    Textbook(std::string title, std::string author, int publicationYear, int numOfPages,
+        std::string subject, int edition) :
+        Book(title, author, publicationYear, numOfPages), subject(subject), edition(edition) {}
+//метод выводит информацию о предмете и издании.
+    void displayTextbookInfo() {
+        std::cout << "Предмет: " << subject << ", Издание: " << edition << std::endl;
+    }
+// деструктор должен вывести сообщение о том, что объект "Учебник" уничтоженен.
+    ~Textbook() {
+        std::cout << "Объект 'Учебник' уничтожен." << std::endl;
+    }
+};
+
+int main() {
+    //название,автор, год,страницы, предмет,издание
+    Textbook textbook("автостопом по галактикам", "дуглас адамс", 1979, 317, "Литература", 3);
+
+    textbook.printInfo();
+    textbook.displayTextbookInfo();
+
+    return 0;
+}
+...............................компьютер...........................................
+ #include <iostream>
+#include <string>
+
+class Computer {
+protected:
+    std::string manufacturer;
+    std::string cpuModel;
+    int ramSize;
+    int hddSize;
+
+public:
+    // Конструктор: принимает все поля.
+     Computer(std::string manufacturer, std::string cpuModel, int ramSize, int hddSize) :
+        manufacturer(manufacturer), cpuModel(cpuModel), ramSize(ramSize), hddSize(hddSize) {}
+   
+// метод проверки наличия свободного места 
+    bool hasFreeDiskSpace() {
+        return hddSize > 0;
+    }
+
+    // метод вывода инф 
+    void printInfo() {
+        std::cout << "Производитель: " << manufacturer << ", Модель процессора: " << cpuModel << ", Оперативная память: "
+            << ramSize << " ГБ, Жесткий диск: " << hddSize << " ГБ" << std::endl;
+    }
+
+    // Деструктор: выводит сообщение о завершении работы компьютера.
+    ~Computer() {
+        std::cout << "Завершение работы компьютера." << std::endl;
+    }
+};
+//класс DesktopComputer, который наследует от класса Computer
+class DesktopComputer : public Computer {
+private:
+    int monitorSize;
+    bool isGamingPC;
+
+public:
+
+//Конструктор класса DesktopComputerдолжен учитывать все параметры конструктора базового класса Computer, а также новые поля.
+    DesktopComputer(std::string manufacturer, std::string cpuModel, int ramSize, int hddSize,
+        int monitorSize, bool isGamingPC) :
+        Computer(manufacturer, cpuModel, ramSize, hddSize), monitorSize(monitorSize), isGamingPC(isGamingPC) {}
+//выводит информацию о общественном мониторе и статусе игрового ПК.
+    void displayDesktopInfo() {
+        std::cout << "Размер монитора: " << monitorSize << " дюймов, Игровой ПК: " << (isGamingPC ? "да" : "нет") << std::endl;
+    }
+//Деструктор класса DesktopComputerдолжен вывести сообщение о завершении работы настольного компьютера.
+   ~DesktopComputer() {
+        std::cout << "Завершение работы настольного компьютера." << std::endl;
+    }
+};
+
+int main() {
+    DesktopComputer desktopComputer("Amd", "rayzen", 16, 500); //(фирма,модель,оп,ожд)
+
+    desktopComputer.printInfo();
+    desktopComputer.displayDesktopInfo();
+
+    return 0;
+}
+ .............................................банковский счет..........................
+ #include <iostream>
+#include <string>
+
+class BankAccount {
+protected:
+    std::string accountNumber;
+    std::string ownerName;
+    double balance;
+
+public:
+// Конструктор: принимает номер счета и имя владельца.
+  BankAccount(std::string accountNumber, const std::string& ownerName) :
+        accountNumber(accountNumber),
+        ownerName(ownerName),
+        balance(0.0) {}
+
+// метод внесение денег на счет
+    void deposit(double amount) {
+        balance += amount;
+    }
+//Метод:  снятие денег.
+    void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+        } else {
+            std::cout << "Недостаточно средств на счете." << std::endl;
+        }
+    }
+//метод вывода информации
+    void printInfo() {
+        std::cout << "Номер счета: " << accountNumber << ", Владелец счета: " << ownerName << ", Баланс: " << balance << std::endl;
+    }
+
+// Деструктор: выводит сообщение о закрытии счета.
+    ~BankAccount() {
+        std::cout << "Счет закрыт." << std::endl;
+    }
+};
+
+//класс CheckingAccount, который наследует от класса BankAccount. Этот класс должен добавить следующие новые поля и методы:
+class CheckingAccount : public BankAccount {
+private:
+    double overdraftLimit;
+
+public:
+//конструктор должен принять все параметры конструктора базового класса BankAccountи нового поля overdraftLimit.
+    CheckingAccount(std::string accountNumber, std::string ownerName, double overdraftLimit) :
+        BankAccount(accountNumber, ownerName), overdraftLimit(overdraftLimit) {}
+
+//метод устанавливает лимит овердрафта
+    void setOverdraftLimit(double limit) {
+        overdraftLimit = limit;
+    }
+//метод выводит информацию о лимитном овердрафте и текущем балансе.
+    void displayAccountInfo() {
+        std::cout << "Лимит овердрафта: " << overdraftLimit << ", Текущий баланс: " << balance << std::endl;
+    }
+
+//деструктор должен вывести сообщение о закрытии расчетного счета.
+    ~CheckingAccount() {
+        std::cout << "Расчетный счет закрыт." << std::endl;
+    }
+};
+
+int main() {
+    CheckingAccount checkingAccount("11111", "Роман Волощенко", 2000);
+
+    checkingAccount.deposit(1000.0);
+    checkingAccount.withdraw(500.0);
+    checkingAccount.displayAccountInfo();
+
+    return 0;
+}
+ ......................................................телефон.................................
+ #include <iostream>
+#include <string>
+
+// Базовый класс Phone
+class Phone {
+protected:
+    std::string brand;
+    std::string model;
+    std::string os;
+    int batteryCapacity;
+public:
+// Конструктор: принимает марку, модель и ОС.
+    Phone(std::string brand, std::string model, std::string os, int batteryCapacity)
+        : brand(brand), model(model), os(os), batteryCapacity(batteryCapacity) {}
+    
+// Метод: вывод информации о заряде батареи.
+    void displayBatteryInfo() { std::cout << "Заряд батареи: " << batteryCapacity << "%\n"; }
+   
+};
+
+// Класс-наследник FeaturePhone
+class FeaturePhone : public Phone {
+protected:
+    bool hasCamera;
+    bool hasBluetooth;
+public:
+//должен учитывать все параметры конструктора базового класса Phone, а также новые поля.
+    FeaturePhone(std::string brand, std::string model, std::string os, int batteryCapacity, bool hasCamera = false, bool hasBluetooth = false)
+        : Phone(brand, model, os, batteryCapacity), hasCamera(hasCamera), hasBluetooth(hasBluetooth) {}
+ //должен вывести сообщение о том, что телефон отключен   
+~FeaturePhone() { std::cout << "Телефон отключен.\n"; }
+    
+//выводит информацию о наличии камеры и Bluetooth
+void displayFeaturePhoneInfo() {
+        std::cout << "Информация о телефоне:\n";
+        std::cout << "Марка: " << brand << "\n";
+        std::cout << "Модель: " << model << "\n";
+        std::cout << "Операционная система: " << os << "\n";
+        std::cout << "Заряд батареи: " << batteryCapacity << "%\n";
+        std::cout << "Наличие камеры: ";
+        std::cout << (hasCamera ? "есть" : "нет") << "\n";
+        std::cout << "Наличие Bluetooth: ";
+        std::cout << (hasBluetooth ? "есть" : "нет") << "\n";
+    }
+};
+
+int main() {
+    // Создание экземпляра FeaturePhone
+    FeaturePhone phone("iphone", "12", "ios", 100, true, true);
+    phone.displayFeaturePhoneInfo();
+    return 0;
+}
+ 
+......................................игрок........................
+ #include <iostream>
+#include <string>
+
+using namespace std;
+
+class Player {
+public:
+  string name;
+  int lvl;
+  int xp;
+ 
+//Конструктор: принимает имя и начальный уровень.
+  Player(string name, int lvl) : name(name), lvl(lvl), xp(0) {}
+
+//Деструктор: выводит сообщение об удалении игрока.
+  ~Player() {
+    cout << "игрок " << name << " удален.\n";
+  }
+
+//Метод: повышение уровня при достижении определенного количества очков.
+  void levelUp() {
+    if (xp >= 100) {
+      lvl++;
+      xp = 0;
+    }
+  }
+};
+
+//класс ProfessionalPlayer, который наследует от класса Player
+class ProfessionalPlayer : public Player {
+public:
+  string team;
+  int salary;
+
+//Конструктор класса ProfessionalPlayerдолжен учитывать все параметры конструктора базового класса Player, а также новые поля.
+  ProfessionalPlayer(string name, int lvl, string team, int salary)
+      : Player(name, lvl), team(team), salary(salary) {}
+
+//Деструктор класса ProfessionalPlayerдолжен вывести сообщение об удалении профессионального игрока.
+  ~ProfessionalPlayer() {
+    cout << "проф игрок " << name << " удален.\n";
+  }
+//displayPlayerInfo()– выводит информацию о команде и зарплате игрока.
+  void displayPlayerInfo() {
+    
+    cout << "команда: " << team << endl;
+    cout << "зарплата: " << salary << endl;
+  }
+};
+
+int main() {
+  ProfessionalPlayer player1("роман", 1, "арсенал", 100000);
+
+  player1.displayPlayerInfo();
+
+  return 0;
+}
+.......................................фильм............................
+#include <iostream>
+#include <string>
+
+class Movie {//класс
+private:
+    std::string title;
+    std::string director;
+    int year;
+    double rating;
+
+public:
+    // Конструктор: принимает все поля.
+    Movie(std::string title, std::string director, int year, float rating)
+        : title(title), director(director), year(year), rating(rating) {}
+    
+
+    // Деструктор: выводит сообщение о завершении показа фильма.
+    ~Movie() {
+        std::cout << "Показ фильма завершен\n"<< std::endl;
+    }
+
+    //  Метод: вывод информации о фильме
+    void play()  {
+        std::cout << "Название: " << title << std::endl;
+        std::cout << "Режиссер: " << director << std::endl;
+        std::cout << "Год выхода: " << year << std::endl;
+        std::cout << "Рейтинг: " << rating << std::endl;
+    }
+};
+class Documentary : public Movie {
+public:
+    std::string subject;
+    std::string duration;
+
+    // должен учитывать все параметры конструктора базового класса Movie, а также новые поля.
+    Documentary(std::string title,std::string director, int year, float rating, std::string subject, std::string duration) :
+        Movie(title, director, year, rating) ,subject(subject),duration(duration){}
+        
+    
+
+    // должен вывести сообщение о завершении показа документального фильма.
+    ~Documentary() {
+        std::cout << "Показ документального фильма завершен\n"<< std::endl;
+    }
+
+    // выводит информацию о теме и продолжительности документального фильма.
+    void displayDocumentaryInfo() {
+        
+        std::cout << "Тема: " << subject << std::endl;
+        std::cout << "Продолжительность: " << duration << std::endl;
+    }
+};
+
+int main() {
+    // Создание экземпляра класса Documentary
+    Documentary documentary("формаж 3", "джастин лин", 2006, 8.7, "гонки", "90 минут");
+
+    // Вывод информации о фильме
+    documentary.displayDocumentaryInfo();
+    documentary.play();
+    return 0;
+}
+.................................работник..............................
+#include <iostream>
+#include <string>
+
+class Worker {//класс
+private:
+  std::string name;
+  std::string position;
+  int salary;
+  int seniority;
+
+public:
+    // Конструктор: принимает имя, должность и зарплату.
+    Worker(std::string name, std::string position, int salary, int seniority)
+      : name(name), position(position), salary(salary), seniority(seniority) {}
+
+
+
+    // Метод: повышение зарплаты в зависимости от стажа.
+    void increaseSalary() {
+        if (seniority >= 5) { // пример условия для повышения зарплаты
+            salary += 1.1; // повышение на 10%
+            
+        }
+    }
+// Деструктор: выводит сообщение об увольнении работника.
+    ~Worker() {
+        std::cout << "Уволен работник: " << name << std::endl;
+    }
+    
+};
+class Manager : public Worker {
+public:
+    std::string department;
+    int bonus;
+
+//Конструктор класса Manager должен принимать все параметры конструктора базового класса Worker, а также новые поля.
+    Manager(std::string name, std::string position, int salary, int seniority, std::string department, int bonus) :
+        Worker(name, position, salary, seniority), department(department), bonus(bonus) {}
+
+//выводит информацию об отделе и премии
+   void displayManagerInfo() {
+        std::cout << "Отдел: " << department << std::endl;
+        std::cout << "Премия: " << bonus << std::endl;
+    } 
+
+   //Деструктор класса Manager должен выводить сообщение об увольнении менеджера. 
+ ~Manager() {
+        std::cout << "Менеджер  уволен." << std::endl;
+    }
+
+};
+
+int main() {
+    Manager manager("роман роман", "Менеджер", 50000, 7, "Продажи", 10000);
+    manager.displayManagerInfo();
+    manager.increaseSalary();
+    return 0;
+}
+...........................................товар...........................
+
+#include <iostream>
+#include <string>
+#include <ctime> 
+ 
+
+class Product {
+private:
+    std::string name;
+    double price;
+    int quantityInStock;
+
+public:
+    // Конструктор: принимает название и цену.
+    Product(const std::string name, double price) : name(name), price(price), quantityInStock() {
+        //Инициализируем количество на складе нулем
+    }
+
+    // Метод для расчета стоимости товара на складе
+    double costInStock()  {
+        return price * quantityInStock;
+    }
+
+    //Метод для изменения количества на складе 
+    void changeQuantity(int newQuantity){
+        quantityInStock = newQuantity;
+    }
+
+
+   // Деструктор: выводит сообщение о том, что товар больше не хранится на складе.
+    ~Product() {
+        std::cout << "Товар  больше не хранится на складе." << std::endl;
+    }
+
+
+};
+class PerishableProduct : public Product {
+public:
+    std::string expirationDate;
+    std::string  storageConditions;
+
+//должен принимать все параметры конструктора базового класса Product, а также новые поля.
+PerishableProduct(const std::string name, double price, std::string storageConditions, std::string expirationDate):
+Product(name, price ), storageConditions(storageConditions), expirationDate(expirationDate){}
+
+//выводит информацию о сроке годности и условиях хранения.
+void displayPerishableInfo() const {
+        std::cout << "Срок годности: " << expirationDate << std::endl;
+        std::cout << "Условия хранения: " << storageConditions << std::endl;
+    }
+
+//должен выводить сообщение о том, что товар больше не хранится на складе.
+~PerishableProduct() {
+        std::cout << "Товар  больше не хранится на складе ." << std::endl;
+    }
+};
+
+   
+
+int main() {
+   PerishableProduct product("молоко", 2.50,  "Refrigerate", "06/12/2023");
+  product.displayPerishableInfo();
+
+
+    return 0;
+}
+
+.......................точка.........................
+#include <cmath>
+#include <iostream>
+#include <string>
+
+ class Point {
+public:
+    int x;
+    int y;
+//конструктор для инициализации координат.
+    Point() : x(0), y(0) {}
+//конструктор копирования
+    Point(int x, int y) : x(x), y(y) {}
+//Деструктор
+    ~Point() {}
+//метод вывода инф о точке
+    void display() {
+        std::cout << "(" << x << ", " << y << ")" << std::endl;
+    }
+//метод для смещения точки на указанное расстояние.
+    void move(int dx, int dy) {
+        x += dx;
+        y += dy;
+    }
+};
+
+
+ class Section {
+public:
+    Point pbeg;//начальная точка отрезка типа Point
+    Point pend;//конечная точка отрезка типа Point
+//Конструктор по умолчанию, который инициализирует pbeg и pend как точки с координатами (0, 0).
+    Section() : pbeg(0, 0), pend(0, 0) {}
+//Конструктор с параметрами, который принимает координаты начальной и конечной точки и инициализирует pbeg и pend.
+    Section(int x1, int y1, int x2, int y2) : pbeg(x1, y1), pend(x2, y2) {}
+//Конструктор копирования, который создаёт глубокую копию объектов pbeg и pend.
+    Section(const Section& other) : pbeg(other.pbeg), pend(other.pend) {}
+//Деструктор, который освобождает ресурсы.
+    ~Section() {}
+//Метод display() для вывода информации об отрезке, включая координаты начальной и конечной точек.
+    void display() {
+        std::cout << "Начальная точка: ";
+        pbeg.display();
+        std::cout << "Конечная точка: ";
+        pend.display();
+    }
+//Метод length() для вычисления длины отрезка.
+    double length() {
+        return sqrt(pow(pend.x - pbeg.x, 2) + pow(pend.y - pbeg.y, 2));
+    }
+};
+ int main() {
+    // Создание и вывод оригинальных отрезков
+    Section s1(1, 2, 3, 4);
+    Section s2(5, 6, 7, 8);
+
+    std::cout << "Оригинальные отрезки:" << std::endl;
+    s1.display();
+    s2.display();
+
+    // Копирование отрезков
+    Section s3(s1);
+    Section s4(s2);
+
+    // Изменение координат точек копий
+    s3.pbeg.move(1, -1);
+    s4.pend.move(-2, 2);
+
+    std::cout << std::endl << "Копии отрезков после изменений:" << std::endl;
+    s3.display();
+    s4.display();
+
+    // Вывод длины каждого отрезка
+    std::cout << std::endl << "Длины отрезков:" << std::endl;
+    std::cout << "s1: " << s1.length() << std::endl;
+    std::cout << "s2: " << s2.length() << std::endl;
+    std::cout << "s3: " << s3.length() << std::endl;
+    std::cout << "s4: " << s4.length() << std::endl;
+
+    return 0;
+}
+ 
+ #include <cmath>
+#include <iostream>
+#include <string>
+
+ class Point {
+public:
+    int x;
+    int y;
+//конструктор для инициализации координат.
+    Point() : x(0), y(0) {}
+//конструктор копирования
+    Point(int x, int y) : x(x), y(y) {}
+//Деструктор
+    ~Point() {}
+//метод вывода инф о точке
+    void display() {
+        std::cout << "(" << x << ", " << y << ")" << std::endl;
+    }
+//метод для смещения точки на указанное расстояние.
+    void move(int dx, int dy) {
+        x += dx;
+        y += dy;
+    }
+};
+
+
+ class Section {
+public:
+    Point pbeg;//начальная точка отрезка типа Point
+    Point pend;//конечная точка отрезка типа Point
+//Конструктор по умолчанию, который инициализирует pbeg и pend как точки с координатами (0, 0).
+    Section() : pbeg(0, 0), pend(0, 0) {}
+//Конструктор с параметрами, который принимает координаты начальной и конечной точки и инициализирует pbeg и pend.
+    Section(int x1, int y1, int x2, int y2) : pbeg(x1, y1), pend(x2, y2) {}
+//Конструктор копирования, который создаёт глубокую копию объектов pbeg и pend.
+    Section(const Section& other) : pbeg(other.pbeg), pend(other.pend) {}
+//Деструктор, который освобождает ресурсы.
+    ~Section() {}
+//Метод display() для вывода информации об отрезке, включая координаты начальной и конечной точек.
+    void display() {
+        std::cout << "Начальная точка: ";
+        pbeg.display();
+        std::cout << "Конечная точка: ";
+        pend.display();
+    }
+//Метод length() для вычисления длины отрезка.
+    double length() {
+        return sqrt(pow(pend.x - pbeg.x, 2) + pow(pend.y - pbeg.y, 2));
+    }
+};
+ int main() {
+    // Создание и вывод оригинальных отрезков
+    Section s1(1, 2, 3, 4);
+    Section s2(5, 6, 7, 8);
+
+    std::cout << "Оригинальные отрезки:" << std::endl;
+    s1.display();
+    s2.display();
+
+    // Копирование отрезков
+    Section s3(s1);
+    Section s4(s2);
+
+    // Изменение координат точек копий
+    s3.pbeg.move(1, -1);
+    s4.pend.move(-2, 2);
+
+    std::cout << std::endl << "Копии отрезков после изменений:" << std::endl;
+    s3.display();
+    s4.display();
+
+    // Вывод длины каждого отрезка
+    std::cout << std::endl << "Длины отрезков:" << std::endl;
+    std::cout << "s1: " << s1.length() << std::endl;
+    std::cout << "s2: " << s2.length() << std::endl;
+    std::cout << "s3: " << s3.length() << std::endl;
+    std::cout << "s4: " << s4.length() << std::endl;
+
+    return 0;
+}
+ 
+ 
+  вывод:
+ 
+
+Оригинальные отрезки:
+Начальная точка: (1, 2)
+Конечная точка: (3, 4)
+Начальная точка: (5, 6)
+Конечная точка: (7, 8)
+
+Копии отрезков после изменений:
+Начальная точка: (2, 1)
+Конечная точка: (3, 4)
+Начальная точка: (5, 6)
+Конечная точка: (5, 10)
+
+Длины отрезков:
+s1: 2.82843
+s2: 2.82843
+s3: 3.16228
+s4: 4
+  
+ 
+
